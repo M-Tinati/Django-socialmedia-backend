@@ -6,3 +6,9 @@ class HomeView(View):
         return render(request, 'home/index.html')
     def post(self,request):
         return render(request, 'home/index.html')
+    
+    
+    
+    
+    
+    

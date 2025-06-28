@@ -1,0 +1,87 @@
+<!-- header.html -->
+<header class="bg-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+      
+      <!-- Logo + Site Name -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="flex items-center space-x-2">
+          <!-- مثال آیکون لوگو -->
+          <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
+          <span class="text-xl font-semibold text-gray-800">SocialHub</span>
+        </a>
+      </div>
+
+      <!-- Navigation links - hidden on mobile -->
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="{% url 'home:main' %}" class="text-gray-600 hover:text-blue-600 text-sm">Home</a>
+        <a href="/explore" class="text-gray-600 hover:text-blue-600 text-sm">Explore</a>
+        <a href="/about" class="text-gray-600 hover:text-blue-600 text-sm">About</a>
+      </div>
+    
+{% if user.is_authenticated %}
+  <div class="flex items-center gap-3">
+    <img src="https://ui-avatars.com/api/?name={{ user.first_name|default:user.username }}&background=0D8ABC&color=fff&rounded=true&size=32" 
+         alt="avatar" 
+         class="w-8 h-8 rounded-full shadow" />
+    <span class="text-gray-800 font-semibold text-sm">
+      Hi, {{ user.first_name|default:user.username }}
+    </span>
+    <a href="{% url 'accounts:logout_user' %}" class="text-red-600 hover:underline text-sm">Logout</a>
+  </div>
+{% else %}
+  <a href="{% url 'accounts:login_user' %}" class="text-gray-700 hover:text-blue-600">Log In</a>
+  <a href="{% url 'accounts:register_user' %}" class="text-white bg-blue-600 px-3 py-2 rounded-lg hover:bg-blue-700">Sign Up</a>
+{% endif %}
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden flex items-center">
+        <button id="mobile-menu-toggle" class="text-gray-600 hover:text-blue-600 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu - hidden by default -->
+  <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 space-y-2">
+    <a href="{% url 'home:main' %}" class="block text-gray-600 hover:text-blue-600">Home</a>
+    <a href="/explore" class="block text-gray-600 hover:text-blue-600">Explore</a>
+    <a href="/about" class="block text-gray-600 hover:text-blue-600">About</a>
+    <hr />
+    
+{% if user.is_authenticated %}
+  <div class="flex items-center gap-3">
+    <img src="https://ui-avatars.com/api/?name={{ user.first_name|default:user.username }}&background=0D8ABC&color=fff&rounded=true&size=32" 
+         alt="avatar" 
+         class="w-8 h-8 rounded-full shadow" />
+    <span class="text-gray-800 font-semibold text-sm">
+      Hi, {{ user.first_name|default:user.username }}
+    </span>
+    <a href="{% url 'accounts:logout_user' %}" class="text-red-600 hover:underline text-sm">Logout</a>
+  </div>
+{% else %}
+  <a href="{% url 'accounts:login_user' %}" class="text-gray-700 hover:text-blue-600">Log In</a>
+  <a href="{% url 'accounts:register_user' %}" class="text-white bg-blue-600 px-3 py-2 rounded-lg hover:bg-blue-700">Sign Up</a>
+{% endif %}
+
+  </div>
+
+  <!-- Toggle Script -->
+  <script>
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+
+    toggle.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  </script>
+</header>

@@ -1,0 +1,43 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}SocialHub{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Include Header -->
+  {% include 'inc/navbar.html' %}
+
+  <!-- Page Content -->
+  <main class="py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {% if messages %}
+    <div class="mb-6">
+      {% for message in messages %}
+        <div
+          class="p-4 rounded
+          {% if message.tags == 'error' %}bg-red-100 text-red-700
+          {% elif message.tags == 'success' %}bg-green-100 text-green-700
+          {% else %}bg-gray-100 text-gray-700
+          {% endif %} mb-3">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+        {% block content %}
+            
+        {% endblock content %}
+            
+    </div>
+  </main>
+{% include 'inc/footer.html' %}
+
+</body>
+</html>
