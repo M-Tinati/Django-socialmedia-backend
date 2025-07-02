@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from .forms import *
+from .models import Post
 from django.contrib.auth.models import User 
 from django.contrib.auth import login , logout , authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -61,3 +62,31 @@ class LogoutView(LoginRequiredMixin , View):
         logout(request)
         messages.success(request, 'You have logged out successfully!')
         return redirect('home:main')
+    
+    
+    
+# class UserProfileView(LoginRequiredMixin,View):
+#     template_name = 'accounts/userprofile.html'
+#     def get(self,request,user_id):
+#         user = User.objects.get(id=user_id)
+#         return render (request,self.template_name,{user:'user'})
+    
+    
+
+    
+class UserProfileView(LoginRequiredMixin, View):
+    template_name = 'accounts/userprofile.html'
+
+    def get(self, request, user_id):
+        user = User.objects.get(id=user_id)
+        posts = Post.objects.filter(user=user).order_by('-created')
+        return render(request, self.template_name, {'profile_user': user, 'posts': posts})
+
+class PostDeleteView(LoginRequiredMixin,View):
+    def get(self,request,post_id):
+        post = Post.objects.get(pk=post_id)
+        if post.user_id == request.user.id:
+            post.delete()
+        return redirect ('accounts:user_profile')
+    
+    

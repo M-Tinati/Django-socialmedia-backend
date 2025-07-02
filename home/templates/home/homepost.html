@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | SocialHub{% endblock %}
+
+{% block content %}
+<section class="bg-gray-100 py-10">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-4xl font-bold text-center mb-10 text-gray-800">📢 Community Posts</h2>
+
+    {% if posts %}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for post in posts %}
+          <div class="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden border border-gray-200">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50">
+              <div class="flex items-center space-x-3">
+                {% with gender=forloop.counter|divisibleby:2|yesno:"men,women" %}
+                <img src="https://randomuser.me/api/portraits/{{ gender }}/{{ forloop.counter|add:10 }}.jpg"
+                     class="w-10 h-10 rounded-full border border-gray-300 object-cover"
+                     alt="Avatar of {{ post.user.username }}">
+                {% endwith %}
+                <div class="flex flex-col leading-tight">
+                  <span class="text-sm font-semibold text-gray-800">@{{ post.user.username }}</span>
+                  <span class="text-xs text-gray-500">ID: {{ post.user.id }}</span>
+                </div>
+              </div>
+              <span class="text-xs text-gray-500">{{ post.created|timesince }} ago</span>
+            </div>
+
+            <!-- Post body -->
+            <div class="px-4 py-3">
+              <p class="text-gray-700 text-sm leading-relaxed break-words line-clamp-6">
+                {{ post.body|linebreaksbr }}
+              </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="border-t px-4 py-2 bg-gray-50 text-sm flex justify-between text-gray-500">
+              <div class="flex space-x-4">
+                <button class="hover:text-pink-500"><i class="fa-regular fa-heart"></i> Like</button>
+                <button class="hover:text-blue-500"><i class="fa-regular fa-comment"></i> Comment</button>
+              </div>
+              <span class="text-xs">Updated {{ post.updated|timesince }} ago</span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-gray-500">No posts yet. Be the first to share something!</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

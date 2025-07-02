@@ -20,7 +20,7 @@
       <!-- Navigation links - hidden on mobile -->
       <div class="hidden md:flex items-center space-x-6">
         <a href="{% url 'home:main' %}" class="text-gray-600 hover:text-blue-600 text-sm">Home</a>
-        <a href="/explore" class="text-gray-600 hover:text-blue-600 text-sm">Explore</a>
+        <a href="{% url 'home:post' %}" class="text-gray-600 hover:text-blue-600 text-sm">Post</a>
         <a href="/about" class="text-gray-600 hover:text-blue-600 text-sm">About</a>
       </div>
     
@@ -33,6 +33,7 @@
       Hi, {{ user.first_name|default:user.username }}
     </span>
     <a href="{% url 'accounts:logout_user' %}" class="text-red-600 hover:underline text-sm">Logout</a>
+    <a href="{% url 'accounts:user_profile' request.user.id %}" class="text-black-600 hover:underline text-sm">Profile</a>
   </div>
 {% else %}
   <a href="{% url 'accounts:login_user' %}" class="text-gray-700 hover:text-blue-600">Log In</a>
@@ -54,7 +55,7 @@
   <!-- Mobile Menu - hidden by default -->
   <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 space-y-2">
     <a href="{% url 'home:main' %}" class="block text-gray-600 hover:text-blue-600">Home</a>
-    <a href="/explore" class="block text-gray-600 hover:text-blue-600">Explore</a>
+    <a href="{% url 'home:post' %}" class="block text-gray-600 hover:text-blue-600">Post</a>
     <a href="/about" class="block text-gray-600 hover:text-blue-600">About</a>
     <hr />
     
