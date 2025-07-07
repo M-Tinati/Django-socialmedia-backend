@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
+from .models import Post
 from django.core.exceptions import ValidationError
 from django.contrib.auth import login , logout
 
@@ -39,3 +40,19 @@ class LoginUserForm(forms.Form):
     username = forms.CharField(max_length=80 , widget=(forms.TextInput(attrs={ 'class': 'block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'})))
     password = forms.CharField(max_length=80 , widget=(forms.PasswordInput(attrs={ 'class': 'block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'})))    
 
+
+
+class PostUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('body',)
+        
+        
+class PostCreateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['slug', 'body']
+        widgets = {
+            'slug': forms.TextInput(attrs={'class': 'block w-full px-3 py-2 border border-gray-300 rounded-md'}),
+            'body': forms.Textarea(attrs={'class': 'block w-full px-3 py-2 border border-gray-300 rounded-md'}),
+        }

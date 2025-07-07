@@ -1,11 +1,13 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.views import View
 from .forms import *
-from .models import Post
+from .models import *
 from django.contrib.auth.models import User 
 from django.contrib.auth import login , logout , authenticate
+from django.contrib.auth import views as auth_view
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 class AccountsView(View):
     class_form = UserRegesterForm
     template_name = 'accounts/register.html'
@@ -82,11 +84,48 @@ class UserProfileView(LoginRequiredMixin, View):
         posts = Post.objects.filter(user=user).order_by('-created')
         return render(request, self.template_name, {'profile_user': user, 'posts': posts})
 
-class PostDeleteView(LoginRequiredMixin,View):
-    def get(self,request,post_id):
-        post = Post.objects.get(pk=post_id)
+class PostDeleteView(LoginRequiredMixin, View):
+    def get(self, request, post_id):
+        post = get_object_or_404(Post, pk=post_id)
         if post.user_id == request.user.id:
             post.delete()
-        return redirect ('accounts:user_profile')
+        return redirect('accounts:user_profile', user_id=request.user.id)
+
+    
+
+class PostUpdateView(LoginRequiredMixin, View):
+    def get(self, request, post_id):
+        post = get_object_or_404(Post, pk=post_id)
+        if post.user != request.user:
+            return redirect('home:main')
+        form = PostUpdateForm(instance=post)
+        return render(request, 'accounts/post_update.html', {'form': form, 'post': post})
+
+    def post(self, request, post_id):
+        post = get_object_or_404(Post, pk=post_id)
+        if post.user != request.user:
+            return redirect('home:main')
+        form = PostUpdateForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:user_profile', user_id=request.user.id)
+        return render(request, 'accounts/post_update.html', {'form': form, 'post': post})
+
+
+
+class PostCreateView(LoginRequiredMixin, View):
+    def get(self, request):
+        form = PostCreateForm()
+        return render(request, 'accounts/post_create.html', {'form': form})
+
+    def post(self, request):
+        form = PostCreateForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('accounts:user_profile', user_id=request.user.id)
+        return render(request, 'accounts/post_create.html', {'form': form})
+    
     
     
