@@ -120,9 +120,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USER = "admin@gmail.com"
+EMAIL_USER = "a39477392@gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_PASSWORD = 'app_password'
+EMAIL_HOST_PASSWORD = 'oblsydqqrotwcieb'
 EMAIL_USE_TLS =True
 DEFAULT_FROM_EMAIL = "admin-socialmedia"
 

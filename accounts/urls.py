@@ -10,10 +10,10 @@ urlpatterns = [
     path('post/<int:post_id>/update/', views.PostUpdateView.as_view(), name='post_update'),
     path('post/<int:post_id>/delete/', views.PostDeleteView.as_view(), name='post_delete'),
     path('post/create/', views.PostCreateView.as_view(), name='post_create'),
-    path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
-    path('password_reset_done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('password_reset/', views.UserPasswordReset.as_view(), name='password_reset'),
+    path('password_reset_done/', views.UserPasswordResetDone.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', views.UserPasswordResetConfirm.as_view(), name='password_reset_confirm'),
+    path('reset/done/', views.UserPasswordResetComplete.as_view(), name='password_reset_complete'),
 
 ]
 

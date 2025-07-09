@@ -126,6 +126,23 @@ class PostCreateView(LoginRequiredMixin, View):
             post.save()
             return redirect('accounts:user_profile', user_id=request.user.id)
         return render(request, 'accounts/post_create.html', {'form': form})
-    
-    
+
+
+class UserPasswordReset(auth_view.PasswordResetView):
+    template_name = 'accounts/password_reset_form.html'
+    success_url = reverse_lazy('accounts:password_reset_done')
+
+
+class UserPasswordResetDone(auth_view.PasswordResetDoneView):
+    template_name = 'accounts/password_reset_done.html'
+
+
+class UserPasswordResetConfirm(auth_view.PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_confirm.html'
+    success_url = reverse_lazy('accounts:password_reset_complete') 
+
+
+class UserPasswordResetComplete(auth_view.PasswordResetCompleteView): 
+    template_name = 'accounts/password_reset_complete.html' 
+
     
