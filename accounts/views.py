@@ -78,11 +78,15 @@ class LogoutView(LoginRequiredMixin , View):
     
 class UserProfileView(LoginRequiredMixin, View):
     template_name = 'accounts/userprofile.html'
-
+    
     def get(self, request, user_id):
+        is_following = False
         user = User.objects.get(id=user_id)
+        relation = Follow.objects.filter(from_user=request.user,to_user=user)
+        if relation.exists():
+            is_following = True
         posts = Post.objects.filter(user=user).order_by('-created')
-        return render(request, self.template_name, {'profile_user': user, 'posts': posts})
+        return render(request, self.template_name, {'profile_user': user, 'posts': posts , 'is_following':is_following})
 
 class PostDeleteView(LoginRequiredMixin, View):
     def get(self, request, post_id):
@@ -146,3 +150,30 @@ class UserPasswordResetComplete(auth_view.PasswordResetCompleteView):
     template_name = 'accounts/password_reset_complete.html' 
 
     
+
+
+class FollowUserView(LoginRequiredMixin,View):
+    def get(self,request,user_id):
+        users = User.objects.get(id=user_id)
+        relation = Follow.objects.filter(from_user=request,to_user=users)
+        if relation.exists():
+            messages.error(request,'you already followed this user ','error')
+        else:
+            relation(from_user=request,to_user=users).save()
+            messages.success(request,'you follow this user','success')
+        return redirect('accounts:user_profile',user_id)
+    
+class UnFollowUserView(LoginRequiredMixin,View):
+    def get(self,request,user_id):
+        users = User.objects.get(id=user_id)
+        relation = Follow.objects.filter(from_user=request,to_user=users)
+        if relation.exists():
+            relation.delete()
+            messages.success(request,'you unfollow this user','success')
+        else:
+            messages.error(request,'error proccess ','error')
+        return redirect('accounts:user_profile',user_id)
+            
+            
+    
+            

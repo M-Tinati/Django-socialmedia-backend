@@ -17,6 +17,16 @@
       </div>
     </div>
 
+{% if request.user.id !=user.id and not is_following %}
+          <a href="{% url 'accounts:user_follow' user_id %}">
+          Follow
+        </a>
+        {% elif  request.user.id !=user.id and is_following %}
+          <a href="{% url 'accounts:user_unfollow' user_id %}">
+          UnFollow
+        </a>
+{% endif %}
+  
     <!-- Create New Post Button -->
     {% if request.user == profile_user %}
       <div class="text-right mb-6">

@@ -14,6 +14,8 @@ urlpatterns = [
     path('password_reset_done/', views.UserPasswordResetDone.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', views.UserPasswordResetConfirm.as_view(), name='password_reset_confirm'),
     path('reset/done/', views.UserPasswordResetComplete.as_view(), name='password_reset_complete'),
+    path('follow/<int"user_id>',views.FollowUserView.as_view(),name='user_follow'),
+    path('unfollow/<int"user_id>',views.UnFollowUserView.as_view(),name='user_unfollow'),
 
 ]
 
