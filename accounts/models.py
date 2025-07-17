@@ -10,7 +10,9 @@ class Post(models.Model):
     
     def __str__(self):
         return f'{self.slug}'
-
+    
+    def like_counts(self):
+        return self.pvote.count()
 
 class Follow(models.Model):
     from_user = models.ForeignKey(User, on_delete=models.CASCADE , related_name='followers')

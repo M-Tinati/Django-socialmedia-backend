@@ -5,14 +5,30 @@
 {% block content %}
 <section class="bg-gray-100 py-10 min-h-screen">
   <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
+
+    <form method="get" class="mb-8 max-w-xl mx-auto">
+      {{ form.search.label_tag }}
+      <input 
+        type="text" 
+        name="search" 
+        value="{{ request.GET.search }}" 
+        placeholder="Search posts..." 
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-indigo-200"
+      >
+      <button 
+        type="submit" 
+        class="mt-2 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">
+        Search
+      </button>
+    </form>
+
     <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">📢 Community Posts</h2>
 
     {% if posts %}
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {% for post in posts %}
           <div class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-300
-                      flex flex-col
-                      min-h-[280px] max-h-[320px]">
+                      flex flex-col h-full">
             
             <!-- Header -->
             <div class="flex items-center space-x-4 px-5 py-4 bg-gray-50 border-b border-gray-200 flex-shrink-0">
@@ -30,22 +46,19 @@
             <!-- Post Body -->
             <div class="p-5 flex-grow overflow-hidden">
               <p class="text-gray-800 text-base leading-relaxed whitespace-pre-wrap break-words overflow-hidden"
-                 style="display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden;">
+                 style="display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical;">
                 {{ post.body }}
               </p>
             </div>
 
-            <!-- Footer: Like و کامنت -->
+            <!-- Footer: Like -->
             <div class="flex justify-between items-center border-t border-gray-200 px-5 py-3 text-gray-500 text-sm flex-shrink-0">
-              <button class="flex items-center space-x-1 hover:text-pink-600 transition">
+              <a href="{% url 'home:like' post.id %}" class="flex items-center space-x-1 hover:text-pink-600 transition">
                 <i class="fa-regular fa-heart"></i>
-                <span>Like</span>
-              </button>
-              <button class="flex items-center space-x-1 hover:text-blue-600 transition">
-                <i class="fa-regular fa-comment"></i>
-                <span>Comment</span>
-              </button>
+                <span>Like ({{ post.pvote.count }})</span>
+              </a>
             </div>
+
           </div>
         {% endfor %}
       </div>
